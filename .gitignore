@@ -1,0 +1,46 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pgb
+*.egg-info/
+venv/
+env/
+.venv/
+Pipfile.lock
+*.sqlite3
+
+# === FastAPI / Uvicorn logs ===
+*.log
+
+# === Node / React ===
+node_modules/
+dist/
+build/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.env.local
+
+# === Vite ===
+*.tsbuildinfo
+.vite/
+
+# === Docker ===
+.docker/
+docker-compose.override.yml
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+
+# === Docs ===
+docs/devlog/*.tmp
