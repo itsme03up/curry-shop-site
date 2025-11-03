@@ -1,46 +1,68 @@
 # === Python ===
+# Pythonが実行時に自動生成するバイトコードキャッシュ。環境依存だから不要
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 *.pgb
+# パッケージ管理関連（setuptoolsなど）の生成物。ビルドごとに変わる
 *.egg-info/
+# 仮想環境の実体。ローカルパスやOS依存なので共有不要
 venv/
 env/
 .venv/
+# Pipenv専用の依存固定ファイル（今回はrequirements.txtで管理想定）
 Pipfile.lock
+# SQLiteのDBファイル（本番はPostgreSQLなどに切り替えるため除外）
 *.sqlite3
 
 # === FastAPI / Uvicorn logs ===
+# uvicorn や gunicorn の起動時ログファイル（server.logなど）を除外
+# 開発環境で毎回変わるので、Gitに入れても意味がない
 *.log
 
 # === Node / React ===
+# npmやyarnで依存パッケージをダウンロードするフォルダ。サイズも大きく、環境ごとに違う
 node_modules/
+# ViteやReactが生成する本番用ビルド成果物。npm run buildで再生成できる
 dist/
 build/
+# 一時キャッシュ（ViteやBabelのコンパイル情報）
 .cache/
+# パッケージ管理コマンドのエラーログ
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+# npm依存固定ファイル。チーム開発でyarn/pnpm使う場合は除外してもよい
 package-lock.json
+# React側でAPIキーやURLを保持するローカル環境変数。絶対にGitHubに上げない
 .env.local
 
 # === Vite ===
+# TypeScriptの増分ビルド用キャッシュ。再ビルドで自動再生成される
 *.tsbuildinfo
+# Vite開発サーバー用キャッシュフォルダ。ブラウザに配信する中間データ
 .vite/
 
 # === Docker ===
+# 一時ビルドコンテキスト・中間キャッシュ置き場など（カスタムDockerfileで発生）
 .docker/
+# 開発時にローカル設定を上書きするComposeファイル。個人ごとに違うので除外
 docker-compose.override.yml
 
 # === OS ===
+# macOSのフォルダメタデータ（Finderが自動生成）
 .DS_Store
+# Windowsのサムネイルキャッシュ
 Thumbs.db
 
 # === IDE ===
+# 各エディタ（VSCode, IntelliJなど）の設定フォルダ。人ごとに違う
 .vscode/
 .idea/
+# VimやNeovimの一時保存ファイル
 *.swp
 
 # === Docs ===
+# 開発ログ(devlog)はGit管理するけど、一時保存ファイル（.tmp）は無視
 docs/devlog/*.tmp
