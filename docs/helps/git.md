@@ -88,9 +88,65 @@ gh pr view --web	ブラウザでPRを開く
 でも慣れると、“過去の自分の努力を自在に呼び出せる”最高の技術ですからね。」
 
 ---
-💡配置は `docs/git-help.md` にしてOK。
-コミット時に：
-```bash
-git add docs/git-help.md
-git commit -m "docs: add Git usage guide"
-git push
+① mainブランチを保護する（GitHub設定）
+GitHub → 該当リポジトリ →
+Settings → Branches → Branch protection rules → [Add rule]
+
+設定項目はこれだけ：
+✅ Branch name pattern → main
+✅ Require a pull request before merging → ON
+✅ Require approvals → OFF（ひとり開発なら不要）
+✅ Include administrators → OFFでもOK（自分が管理者なら）
+
+💡これで：
+main に直接 push → 「保護されてるからダメです」とGitHubが止めてくれる。
+
+② 今後の開発フローを切り替える
+# mainから分岐して新機能用ブランチ作る
+git checkout main
+git pull origin main
+git checkout -b feat/api-menu
+
+# 作業してコミット
+git add .
+git commit -m "feat(api): add menu endpoint"
+
+# pushしてPR作成
+git push -u origin feat/api-menu
+gh pr create --fill
+
+# GitHubで確認してマージ
+gh pr merge --squash --delete-branch
+
+🪄 ポイント
+--squash でコミットを1つにまとめて main にキレイに反映。
+--delete-branch で作業ブランチを自動削除してくれる。
+
+③ どうしても main に push したい時は
+mainから新ブランチを切って保険を取る：
+git checkout -b backup/main-$(date +%Y%m%d)
+そのブランチをGitHubにpushしておく：
+
+git push origin backup/main-20251103
+それからmainをforce push（どうしても必要な時だけ）。
+
+💬 川田風まとめ
+「いやー、main直pushは“家の配電盤を素手で触る”みたいなもんです。
+小規模でもブランチ切って作業するだけで、未来の自分への優しさが段違いですよ。」
+
+GitHubでの“本流”のやり方。
+1人でも履歴が綺麗に残るし、後で「あの変更いつ入れたっけ？」がすぐ分かります。
+
+# 今の作業ブランチをpush（まだmainには入っていない）
+git push -u origin feat/menu-api
+
+# PRを作成
+gh pr create --fill  # or GitHubの画面で「New Pull Request」
+
+# （GitHub上で確認）→ Merge pull request → squash & delete branch
+gh pr merge --squash --delete-branch
+
+💡 squash merge を選ぶと：
+コミットが1つにまとまって main に入る
+履歴がスッキリする
+作業ブランチは自動削除できる
